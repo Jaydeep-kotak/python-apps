@@ -1,12 +1,15 @@
+from ast import Return
 import asyncio
 import json
+from urllib import response
+import itertools
 import mysql.connector
 from mysql.connector import errorcode
 
 from walkoff_app_sdk.app_base import AppBase
 
 
-class MySQL(AppBase):
+class MySQL_updated(AppBase):
     __version__ = "1.0.0"
     app_name = "MySQL"  # this needs to match "name" in api.yaml
 
@@ -135,7 +138,7 @@ class MySQL(AppBase):
             conn.close()
 
             return result
-
+    
     # Insert data into table
     def insert_data(self, server, user, password, database, table, data):
         if not isinstance(data, list) and not isinstance(data, dict):
@@ -254,7 +257,7 @@ class MySQL(AppBase):
             cursor = conn.cursor()
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
+                print("Something is wrong with your seur name or password")
                 return "Something is wrong with your user name or password"
             elif err.errno == errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
@@ -272,7 +275,155 @@ class MySQL(AppBase):
         cursor.close()
         conn.close()
         return json.dumps(json_data, indent=4)
+   
+    #update data    
+    def update_data(self, server, user, password, database, table, fields=None, condition=None, data_value=None
+    ):
+        q = f"SELECT * from {table}"
+        if condition:
+            q += f" WHERE {condition}"
+        query = f"UPDATE {table} SET "
+        for (key,value) in zip(fields,data_value):
+            query += f"{key} = '{value}',"
+        
+        query = query[:-1]
+        if condition:
+            query += f" WHERE {condition}"
+        
+        try:
+            conn = mysql.connector.connect(
+                host=server, user=user, passwd=password, db=database
+            )
+            cursor = conn.cursor()
+            cursor.execute(q)
+            rs = cursor.fetchone()
+            if rs == None:
+                cursor.close()
+                return f"data not found"
+            else:
+                cursor1 = conn.cursor()
+                cursor1.execute(query)
+                conn.commit()
+                cursor1.close()
+                conn.close()
+                response = {
+                    "message": f"Data updated with success {table}!",
+                    "data": query,}
+                return json.dumps(response, indent=4)
+                
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+                return "Something is wrong with your user name or password"
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+                return "Database does not exist"
+            else:
+                print(err)
+                return err
 
+    # delete data 
+    def delete_data(self, server, user, password, database, table, fields=None, condition=None
+    ):
+        
+        q = f"SELECT * from {table}"
+        if condition:
+            q += f" WHERE {condition}"
+        query = f"DELETE FROM {table}" 
+        if condition:
+            query += f" WHERE {condition}"
+        try:
+            conn = mysql.connector.connect(
+                host=server, user=user, passwd=password, db=database
+            )
+            cursor = conn.cursor()
+            cursor.execute(q)
+            rs = cursor.fetchone()
+            if rs == None:
+                cursor.close()
+                return f"data not found"
+            else:
+                cursor1 = conn.cursor()
+                cursor1.execute(query)
+                conn.commit()
+                cursor1.close()
+                conn.close()
+                response = {
+                    "message": f"Data deleted with success {table}!",
+                    "data": query,}
+                return json.dumps(response, indent=4)
+
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+                return "Something is wrong with your user name or password"
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+                return "Database does not exist"
+            else:
+                print(err)
+                return err
+
+    # join 
+    def join(self, type, server, user, password, database, fields=None
+    ):
+        try:
+            conn = mysql.connector.connect(
+                host=server, user=user, passwd=password, db=database
+            )
+            cursor = conn.cursor()
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+                return "Something is wrong with your user name or password"
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+                return "Database does not exist"
+            else:
+                print(err)
+                return err
+        if type == "INNER JOIN":
+            cursor.execute(fields)
+            row_headers = [x[0] for x in cursor.description]
+            json_data = []
+            for result in cursor.fetchall():
+                json_data.append(dict(zip(row_headers, result)))
+            result = cursor
+            cursor.close()
+            conn.close()
+            return json.dumps(json_data, indent=4)
+        elif type == "LEFT JOIN":
+            cursor.execute(fields)
+            row_headers = [x[0] for x in cursor.description]
+            json_data = []
+            for result in cursor.fetchall():
+                json_data.append(dict(zip(row_headers, result)))
+            result = cursor
+            cursor.close()
+            conn.close()
+            return json.dumps(json_data, indent=4)
+        elif type == "RIGHT JOIN":
+            cursor.execute(fields)
+            row_headers = [x[0] for x in cursor.description]
+            json_data = []
+            for result in cursor.fetchall():
+                json_data.append(dict(zip(row_headers, result)))
+            result = cursor
+            cursor.close()
+            conn.close()
+            return json.dumps(json_data, indent=4)
+        elif type == "CROSS JOIN":
+            cursor.execute(fields)
+            row_headers = [x[0] for x in cursor.description]
+            json_data = []
+            for result in cursor.fetchall():
+                json_data.append(dict(zip(row_headers, result)))
+            result = cursor
+            cursor.close()
+            conn.close()
+            return json.dumps(json_data, indent=4)
+        else:
+                return f"Select join"
 
 if __name__ == "__main__":
-    MySQL.run()
+    MySQL_updated.run()
