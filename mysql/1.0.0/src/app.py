@@ -136,9 +136,7 @@ class MySQL(AppBase):
 
             cursor.close()
             conn.close()
-
             return result
-    
     # Insert data into table
     def insert_data(self, server, user, password, database, table, data):
         if not isinstance(data, list) and not isinstance(data, dict):
