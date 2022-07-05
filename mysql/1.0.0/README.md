@@ -87,13 +87,27 @@ Query condition text after a WHERE clause.
 age=23 and gender='M'
 ```
 
-### update data 
+### Update data 
 update data inside the table
 Fields:
 - table;
 - fields;
 - condition.
 - data fields.
+
+### Delete data 
+delete data inside the table
+Fields:
+- table;
+- condition
+- fields;(optional)
+
+
+### Join Query 
+join two or more table and display data
+Fields:
+- type;
+- fields.
 
 ## Upcoming
 
