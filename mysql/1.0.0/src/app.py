@@ -9,7 +9,7 @@ from mysql.connector import errorcode
 from walkoff_app_sdk.app_base import AppBase
 
 
-class MySQL_updated(AppBase):
+class MySQL(AppBase):
     __version__ = "1.0.0"
     app_name = "MySQL"  # this needs to match "name" in api.yaml
 
@@ -426,4 +426,4 @@ class MySQL_updated(AppBase):
                 return f"Select join"
 
 if __name__ == "__main__":
-    MySQL_updated.run()
+    MySQL.run()
