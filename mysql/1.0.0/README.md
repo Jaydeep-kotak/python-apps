@@ -87,6 +87,14 @@ Query condition text after a WHERE clause.
 age=23 and gender='M'
 ```
 
+### update data 
+update data inside the table
+Fields:
+- table;
+- fields;
+- condition.
+- data fields.
+
 ## Upcoming
 
 - Improve the tables field to be needed just to insert the table name once in the json as key, and for the value the table fields syntax.
