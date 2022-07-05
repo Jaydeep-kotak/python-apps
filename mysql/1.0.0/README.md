@@ -109,6 +109,13 @@ Fields:
 - type;
 - fields.
 
+**Fields example:**
+Table fields to be return.
+```
+
+SELECT * from employees INNER JOIN departments ON employees.emp_no = departments.emp_no
+```
+
 ## Upcoming
 
 - Improve the tables field to be needed just to insert the table name once in the json as key, and for the value the table fields syntax.
