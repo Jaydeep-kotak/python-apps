@@ -102,6 +102,11 @@ Fields:
 - condition
 - fields;(optional)
 
+**Condition example:**
+```
+emp_no = 1
+```
+
 
 ### Join Query 
 join two or more table and display data
