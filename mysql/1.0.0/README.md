@@ -95,6 +95,27 @@ Fields:
 - condition.
 - data fields.
 
+**Fields example:**
+Table fields to be return.
+```
+
+["first_name","last_name"]
+```
+
+**Condition example:**
+Table id to be return.
+```
+
+emp_no=1
+```
+
+**Data Fields example:**
+Table fields value to be updated.
+```
+
+["jaydeep","kotak"]
+```
+
 ### Delete data 
 delete data inside the table
 Fields:
