@@ -103,7 +103,7 @@ Table fields to be return.
 ```
 
 **Condition example:**
-Table id to be return.
+Query condition text after a WHERE clause.
 ```
 
 emp_no=1
@@ -124,6 +124,7 @@ Fields:
 - fields;(optional)
 
 **Condition example:**
+Query condition text after a WHERE clause.
 ```
 emp_no = 1
 ```
